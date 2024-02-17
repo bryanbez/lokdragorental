@@ -10,6 +10,7 @@ export const FieldComponent = ({
   fieldClass = "",
   labelClass = "",
   checked,
+  isDisabled,
 }) => {
   const showValueOfRange = fieldType == "range";
   const displayLabelAfterRadioBtn = fieldType == "radio";
@@ -28,6 +29,7 @@ export const FieldComponent = ({
         min={min}
         max={max}
         checked={checked}
+        disabled={isDisabled}
       />
       {displayLabelAfterRadioBtn && `${label}`}
     </label>

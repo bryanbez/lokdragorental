@@ -7,10 +7,11 @@ const client = new MongoClient(uri);
 const dbConnection = async () => {
   try {
     await client.connect();
-    console.log("Connected to MongoDB");
-    return client.db(process.env.DATABASE_NAME);
-  } catch (err) {
-    console.log(err);
+    const db = client.db(process.env.DATABASE_NAME);
+    return db;
+  } catch (error) {
+    console.error("Error connecting to the database:", error);
+    throw error;
   }
 };
 
@@ -27,11 +28,10 @@ const fetchFieldName = async (fieldName) => {
   return result;
 };
 
-const fetchSingle = async (drago_id) => {
-  const collection = await dbCollectionPromise;
-  const dragoId = parseInt(drago_id);
+const fetchSingle = async (dragoId) => {
   try {
-    const result = await collection.findOne({ id: dragoId });
+    const collection = await dbCollectionPromise;
+    const result = await collection.findOne({ id: parseInt(dragoId) });
 
     return result;
   } catch (err) {
@@ -42,14 +42,27 @@ const fetchSingle = async (drago_id) => {
 const fetchAll = async () => {
   const collection = await dbCollectionPromise;
   try {
-    await client.connect();
-    const result = await collection.find({}).toArray();
+    const result = await collection
+      .aggregate([{ $project: { datas: 0 } }])
+      .toArray();
     return result;
   } catch (err) {
     console.log(err);
-  } finally {
-    await client.close();
   }
 };
 
-export { fetchFieldName, fetchSingle, fetchAll };
+const filterFetch = async (filterBy) => {
+  let valueofRentFilter =
+    filterBy === "rented" ? 1 : filterBy === "notRented" ? 0 : null;
+  const collection = await dbCollectionPromise;
+  try {
+    const result = await collection
+      .find({ "rent.status": valueofRentFilter })
+      .toArray();
+    return result;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export { fetchFieldName, fetchSingle, fetchAll, filterFetch };

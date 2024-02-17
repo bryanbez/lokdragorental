@@ -1,12 +1,7 @@
-import { DisplayCard } from "@/components/card/displaycard";
-import { AppNavbar } from "@/components/navbar";
-import React from "react";
-
-export default function Home(dragos) {
+export default function Home() {
   return (
     <main>
-      <AppNavbar />
-      <DisplayCard />
+      <h2>Drago Dashboard</h2>
     </main>
   );
 }

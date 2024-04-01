@@ -6,6 +6,7 @@ import {
   fetchAllDragos,
   fetchSingleDrago,
   filterDragoRentStatus,
+  filterDragoLegCount
 } from "../lib/apiRoute";
 
 import dynamic from "next/dynamic";
@@ -30,27 +31,35 @@ export default function DragoList() {
   const { state, dispatch } = useDragoData();
   const searchQ = state.searchQuery;
   const isRentedQuery = state.isRentedQuery;
+  const legCountQuery = state.legCountQuery;
 
   useEffect(() => {
     const FetchDragoContent = async () => {
       if (searchQ !== null) {
         let fetchedData;
+       
         if (searchQ === "") {
           fetchedData = await fetchAllDragos(isRentedQuery); // Fetch all dragos
         } else {
           fetchedData = await fetchSingleDrago(searchQ); // Fetch single drago
         }
 
-        // Filter data based on rentStatus
+        //Filter data based on rentStatus
         if (isRentedQuery !== "all") {
-          fetchedData = await filterDragoRentStatus(rentStatus);
+          fetchedData = await filterDragoRentStatus(isRentedQuery);
         }
+
+        // Filter data based on leg count
+      if (legCountQuery !== "all") {
+        fetchedData = await filterDragoLegCount(legCountQuery);
+      }
+       
 
         dispatch({ type: "SET_DRAGO_DATAS", payload: fetchedData });
       }
     };
     FetchDragoContent();
-  }, [searchQ, dispatch]);
+  }, [searchQ, isRentedQuery, legCountQuery, dispatch]);
 
   let alldragos = state.dragoDatas;
 
@@ -68,7 +77,7 @@ export default function DragoList() {
           ) : (
             <p>No Drago Result</p>
           ))}
-        {/* <LazyDragoMultComponent dragos={alldragos} /> */}
+       
       </div>
     </div>
   );

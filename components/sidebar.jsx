@@ -2,7 +2,9 @@
 
 import { RadioButtonComponent } from "./form/radiobutton";
 import { RangeFieldComponent } from "./form/range";
+import SelectOptionComponent from "./form/selectOption";
 import { TextBoxComponent } from "./form/textbox";
+
 
 export const Sidebar = () => {
   return (
@@ -19,7 +21,7 @@ export const Sidebar = () => {
       </div>
 
       <div className="mb-4">
-        <RangeFieldComponent />
+        <SelectOptionComponent />
       </div>
       <div className="mt-2">
         <h2 className="text-lg font-medium text-gray-300">

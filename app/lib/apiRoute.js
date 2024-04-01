@@ -67,6 +67,23 @@ export const filterDragoRentStatus = async (rentStatus) => {
   }
 };
 
+export const filterDragoLegCount = async (legCount) => {
+
+  try {
+    const response = await fetch(
+      `http://localhost:3000/api/drago/legCount/${legCount}`
+    );
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    const alldragos = await response.json();
+   
+    return alldragos;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 export const fetchFieldNameURL = async (fieldName) => {
   // validation of fieldname
   return await fetchFieldName(fieldName);

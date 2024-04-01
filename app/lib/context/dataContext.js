@@ -4,7 +4,7 @@ import React, { createContext, useReducer, useContext } from "react";
 const initalState = {
   dragoDatas: null,
   searchQuery: null,
-  fusionLevelQuery: 0,
+  legCountQuery: 0,
   isRentedQuery: "all",
 };
 
@@ -31,6 +31,11 @@ const DragoReducer = (state, action) => {
       return {
         ...state,
         isRentedQuery: action.payload,
+      };
+    case "SET_LEG_COUNT_QUERY": 
+      return {
+        ...state,
+        legCountQuery: action.payload,
       };
     default:
       return state;
